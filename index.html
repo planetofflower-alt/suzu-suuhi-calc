@@ -243,24 +243,19 @@ function calc(dateStr) {
 // 運命数別の1行＋つまずき＋すずnote記事タイトル（noteの内部検索で着地）
 // =========================================================
 const PROFILES = {
-  1:  { essence: '先回りして決めすぎる、リーダー気質。', stumble: '"決めたい"が強くて、相手の余白を待てない恋。', title: '【運命数1】恋愛の取扱説明書' },
-  2:  { essence: '相手に合わせすぎて、自分が消えてしまう。', stumble: '優しさが過剰になり、距離感を見失う恋。', title: '【運命数2】恋愛の取扱説明書' },
-  3:  { essence: '楽しいのに、本気が続かない人。', stumble: '"今"を楽しむ才能が、深まりを遠ざける恋。', title: '【運命数3】恋愛の取扱説明書' },
-  4:  { essence: '真面目すぎて、重く見られがちな人。', stumble: '誠実さが、相手にプレッシャーになる恋。', title: '【運命数4】恋愛の取扱説明書' },
-  5:  { essence: '自由が欲しくて、約束を避ける気質。', stumble: '縛られたくない＝本気じゃない、ではない恋。', title: '【運命数5】恋愛の取扱説明書' },
-  6:  { essence: '与えすぎて枯れる、"いい人"。', stumble: '境界線が薄くて、いつも消耗する恋。', title: '【運命数6】恋愛の取扱説明書' },
-  7:  { essence: '距離を取りたがる、観察者気質。', stumble: '"知りたい"より"知られたくない"が勝つ恋。', title: '【運命数7】恋愛の取扱説明書' },
-  8:  { essence: '強がって、甘えられない人。', stumble: '頼り方を忘れて、孤独に強くなりすぎる恋。', title: '【運命数8】恋愛の取扱説明書' },
-  9:  { essence: '察しすぎて、疲れる人。', stumble: '気づくのが早すぎて、手放せない恋。', title: '【運命数9】恋愛の取扱説明書' },
-  11: { essence: '直感が強すぎて、不安になる人。', stumble: '感じ取りすぎて、自分の声が分からなくなる恋。', title: '【運命数11】恋愛の取扱説明書' },
-  22: { essence: '大きく動かせるのに、自分の恋には臆病。', stumble: '他人の人生は背負えるのに、自分の願いは口にできない恋。', title: '【運命数22】恋愛の取扱説明書' },
-  33: { essence: '無償の愛で、身を削る人。', stumble: '"愛したい"が"愛されたい"を覆い隠す恋。', title: '【運命数33】恋愛の取扱説明書' },
+  1:  { essence: '先回りして決めすぎる、リーダー気質。', stumble: '"決めたい"が強くて、相手の余白を待てない恋。', title: '【運命数1】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/ne5e23b995df9' },
+  2:  { essence: '相手に合わせすぎて、自分が消えてしまう。', stumble: '優しさが過剰になり、距離感を見失う恋。', title: '【運命数2】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/n798aa07d33a2' },
+  3:  { essence: '楽しいのに、本気が続かない人。', stumble: '"今"を楽しむ才能が、深まりを遠ざける恋。', title: '【運命数3】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/nd2eb53c71153' },
+  4:  { essence: '真面目すぎて、重く見られがちな人。', stumble: '誠実さが、相手にプレッシャーになる恋。', title: '【運命数4】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/n35b7ef50f759' },
+  5:  { essence: '自由が欲しくて、約束を避ける気質。', stumble: '縛られたくない＝本気じゃない、ではない恋。', title: '【運命数5】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/n6abd37f3c281' },
+  6:  { essence: '与えすぎて枯れる、"いい人"。', stumble: '境界線が薄くて、いつも消耗する恋。', title: '【運命数6】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/na042979c5285' },
+  7:  { essence: '距離を取りたがる、観察者気質。', stumble: '"知りたい"より"知られたくない"が勝つ恋。', title: '【運命数7】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/n15e9e2ac2bfb' },
+  8:  { essence: '強がって、甘えられない人。', stumble: '頼り方を忘れて、孤独に強くなりすぎる恋。', title: '【運命数8】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/n5ece22b96dfe' },
+  9:  { essence: '察しすぎて、疲れる人。', stumble: '気づくのが早すぎて、手放せない恋。', title: '【運命数9】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/n58b967213c20' },
+  11: { essence: '直感が強すぎて、不安になる人。', stumble: '感じ取りすぎて、自分の声が分からなくなる恋。', title: '【運命数11】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/ncab8bb61349a' },
+  22: { essence: '大きく動かせるのに、自分の恋には臆病。', stumble: '他人の人生は背負えるのに、自分の願いは口にできない恋。', title: '【運命数22】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/nc9d1bf442645' },
+  33: { essence: '無償の愛で、身を削る人。', stumble: '"愛したい"が"愛されたい"を覆い隠す恋。', title: '【運命数33】恋愛の取扱説明書', url: 'https://note.com/suzu_suuhi/n/n5687555442a9' },
 };
-
-function noteSearchUrl(title) {
-  // すずのnote内検索（@suzu_suuhi の記事が上位ヒットする想定）
-  return 'https://note.com/suzu_suuhi/search?q=' + encodeURIComponent(title);
-}
 
 // =========================================================
 // UIバインド
@@ -291,7 +286,7 @@ $('calc').addEventListener('click', () => {
   $('stumble').textContent = p.stumble;
   const cta = $('cta');
   cta.textContent = (p.title || '取扱説明書') + ' を読む →';
-  cta.href = p.title ? noteSearchUrl(p.title) : 'https://note.com/suzu_suuhi';
+  cta.href = p.url || 'https://note.com/suzu_suuhi';
   res.classList.add('show');
   // スクロールして結果を見せる
   setTimeout(() => res.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
