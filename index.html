@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>運命数 計算ツール｜すず</title>
+<meta name="description" content="生年月日からあなたの運命数（数秘術）を計算します。占いっぽくなく、現実的に。">
+<meta name="robots" content="index, follow">
+<style>
+  :root {
+    --bg-base: #efe9df;
+    --bg-soft: #d9d2c7;
+    --sage: #a9b8a0;
+    --terracotta: #c98b6a;
+    --ink: #3a3631;
+    --ink-soft: #6b6359;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg-base);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-feature-settings: "palt";
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+  header { margin-bottom: 32px; text-align: center; }
+  .brand {
+    font-size: 14px;
+    color: var(--terracotta);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    letter-spacing: 0.02em;
+  }
+  .sub {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 32px 28px;
+    box-shadow: 0 1px 0 rgba(58,54,49,.04), 0 8px 24px rgba(58,54,49,.06);
+    margin-bottom: 24px;
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--ink-soft);
+  }
+  input[type="date"] {
+    width: 100%;
+    padding: 14px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--ink);
+    background: var(--bg-base);
+    border: 1px solid var(--bg-soft);
+    border-radius: 10px;
+    outline: none;
+    transition: border .15s;
+  }
+  input[type="date"]:focus { border-color: var(--sage); }
+  button {
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    color: #fff;
+    background: var(--terracotta);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: opacity .15s;
+  }
+  button:hover { opacity: .88; }
+  button:active { opacity: .76; }
+  .result {
+    background: #fff;
+    border-radius: 14px;
+    padding: 36px 28px;
+    box-shadow: 0 1px 0 rgba(58,54,49,.04), 0 8px 24px rgba(58,54,49,.06);
+    text-align: center;
+    display: none;
+  }
+  .result.show { display: block; }
+  .num-label {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+  }
+  .num {
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--terracotta);
+    line-height: 1;
+    margin: 4px 0 16px;
+    letter-spacing: -0.02em;
+  }
+  .master {
+    font-size: 11px;
+    color: var(--sage);
+    margin-top: -8px;
+    margin-bottom: 18px;
+    letter-spacing: 0.1em;
+  }
+  .essence {
+    font-size: 16px;
+    color: var(--ink);
+    margin: 0 0 8px;
+    font-weight: 500;
+  }
+  .stumble {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+    line-height: 1.7;
+  }
+  .calc-trace {
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--bg-base);
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 16px 0 24px;
+    font-family: ui-monospace, "SF Mono", monospace;
+  }
+  .cta {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 14px;
+    color: var(--terracotta);
+    background: transparent;
+    border: 1.5px solid var(--terracotta);
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all .15s;
+  }
+  .cta:hover { background: var(--terracotta); color: #fff; }
+  footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  footer a { color: var(--ink-soft); text-decoration: underline; }
+  .privacy {
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .err {
+    color: var(--terracotta);
+    font-size: 13px;
+    margin-top: 8px;
+    min-height: 18px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="brand">すず｜運命数で恋をほどく</p>
+    <h1>運命数 計算ツール</h1>
+    <p class="sub">生年月日であなたの"恋の取扱説明書"を。</p>
+  </header>
+
+  <div class="card">
+    <label for="dob">生年月日</label>
+    <input type="date" id="dob" min="1900-01-01" max="2026-12-31">
+    <button id="calc">運命数を出す</button>
+    <p class="err" id="err"></p>
+  </div>
+
+  <div class="result" id="result" role="region" aria-live="polite">
+    <p class="num-label">あなたの運命数</p>
+    <p class="num" id="num">—</p>
+    <p class="master" id="master"></p>
+    <p class="calc-trace" id="trace"></p>
+    <p class="essence" id="essence"></p>
+    <p class="stumble" id="stumble"></p>
+    <a class="cta" id="cta" href="#" target="_blank" rel="noopener">取扱説明書を読む →</a>
+  </div>
+
+  <p class="privacy">
+    🔒 入力した生年月日はブラウザ内だけで計算され、どこにも送信・保存されません。<br>
+    外部APIも使わない静的ページです（コード公開・監査可）。
+  </p>
+
+  <footer>
+    by <a href="https://note.com/suzu_suuhi" target="_blank" rel="noopener">すず｜数秘トリセツ</a>
+  </footer>
+</div>
+
+<script>
+// =========================================================
+// 運命数計算ロジック（純クライアントサイドJS）
+// 仕様: 生年月日の数字をバラして全部足す→2桁なら1桁になるまで足す。
+//       ただし途中や合計が 11/22/33 ならそこで止めて「マスターナンバー」。
+// =========================================================
+function digitSum(n) {
+  return String(n).split('').reduce((a, c) => a + Number(c), 0);
+}
+function reduce(n, trace) {
+  trace.push(n);
+  if (n === 11 || n === 22 || n === 33) return { num: n, master: true };
+  if (n < 10) return { num: n, master: false };
+  return reduce(digitSum(n), trace);
+}
+function calc(dateStr) {
+  // dateStr = "1995-03-21" 形式（input type=date は ISO 形式で返る）
+  const digits = dateStr.replace(/-/g, '');
+  const sum0 = digits.split('').reduce((a, c) => a + Number(c), 0);
+  const trace = [sum0];
+  const res = (sum0 === 11 || sum0 === 22 || sum0 === 33 || sum0 < 10)
+    ? { num: sum0, master: (sum0 === 11 || sum0 === 22 || sum0 === 33) }
+    : reduce(digitSum(sum0), trace);
+  return { ...res, trace };
+}
+
+// =========================================================
+// 運命数別の1行＋つまずき＋すずnote記事タイトル（noteの内部検索で着地）
+// =========================================================
+const PROFILES = {
+  1:  { essence: '先回りして決めすぎる、リーダー気質。', stumble: '"決めたい"が強くて、相手の余白を待てない恋。', title: '【運命数1】恋愛の取扱説明書' },
+  2:  { essence: '相手に合わせすぎて、自分が消えてしまう。', stumble: '優しさが過剰になり、距離感を見失う恋。', title: '【運命数2】恋愛の取扱説明書' },
+  3:  { essence: '楽しいのに、本気が続かない人。', stumble: '"今"を楽しむ才能が、深まりを遠ざける恋。', title: '【運命数3】恋愛の取扱説明書' },
+  4:  { essence: '真面目すぎて、重く見られがちな人。', stumble: '誠実さが、相手にプレッシャーになる恋。', title: '【運命数4】恋愛の取扱説明書' },
+  5:  { essence: '自由が欲しくて、約束を避ける気質。', stumble: '縛られたくない＝本気じゃない、ではない恋。', title: '【運命数5】恋愛の取扱説明書' },
+  6:  { essence: '与えすぎて枯れる、"いい人"。', stumble: '境界線が薄くて、いつも消耗する恋。', title: '【運命数6】恋愛の取扱説明書' },
+  7:  { essence: '距離を取りたがる、観察者気質。', stumble: '"知りたい"より"知られたくない"が勝つ恋。', title: '【運命数7】恋愛の取扱説明書' },
+  8:  { essence: '強がって、甘えられない人。', stumble: '頼り方を忘れて、孤独に強くなりすぎる恋。', title: '【運命数8】恋愛の取扱説明書' },
+  9:  { essence: '察しすぎて、疲れる人。', stumble: '気づくのが早すぎて、手放せない恋。', title: '【運命数9】恋愛の取扱説明書' },
+  11: { essence: '直感が強すぎて、不安になる人。', stumble: '感じ取りすぎて、自分の声が分からなくなる恋。', title: '【運命数11】恋愛の取扱説明書' },
+  22: { essence: '大きく動かせるのに、自分の恋には臆病。', stumble: '他人の人生は背負えるのに、自分の願いは口にできない恋。', title: '【運命数22】恋愛の取扱説明書' },
+  33: { essence: '無償の愛で、身を削る人。', stumble: '"愛したい"が"愛されたい"を覆い隠す恋。', title: '【運命数33】恋愛の取扱説明書' },
+};
+
+function noteSearchUrl(title) {
+  // すずのnote内検索（@suzu_suuhi の記事が上位ヒットする想定）
+  return 'https://note.com/suzu_suuhi/search?q=' + encodeURIComponent(title);
+}
+
+// =========================================================
+// UIバインド
+// =========================================================
+const $ = (id) => document.getElementById(id);
+$('calc').addEventListener('click', () => {
+  const v = $('dob').value;
+  const err = $('err');
+  const res = $('result');
+  err.textContent = '';
+  if (!v) {
+    err.textContent = '生年月日を入力してください。';
+    res.classList.remove('show');
+    return;
+  }
+  const d = new Date(v);
+  if (isNaN(d.getTime())) {
+    err.textContent = '日付の形式が正しくありません。';
+    res.classList.remove('show');
+    return;
+  }
+  const r = calc(v);
+  const p = PROFILES[r.num] || { essence: '—', stumble: '', title: '' };
+  $('num').textContent = r.num;
+  $('master').textContent = r.master ? '★ マスターナンバー' : '';
+  $('trace').textContent = '計算: ' + v.replace(/-/g, ' / ') + ' → ' + r.trace.join(' → ') + ' = ' + r.num;
+  $('essence').textContent = p.essence;
+  $('stumble').textContent = p.stumble;
+  const cta = $('cta');
+  cta.textContent = (p.title || '取扱説明書') + ' を読む →';
+  cta.href = p.title ? noteSearchUrl(p.title) : 'https://note.com/suzu_suuhi';
+  res.classList.add('show');
+  // スクロールして結果を見せる
+  setTimeout(() => res.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+});
+
+// Enterキーでも計算
+$('dob').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('calc').click(); });
+</script>
+</body>
+</html>
